@@ -61,7 +61,7 @@
         }
 
        .background-image {
-            background-image: url('https://iknow-pic.cdn.bcebos.com/0823dd54564e9258e8efea708e82d158cdbf4e50');
+            background-image: url('https://img1.baidu.com/it/u=3974559638,3671788250&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800');
             background-size: cover;
             background-position: center;
             height: 100%;
@@ -420,13 +420,13 @@
     </div>
     <!-- 音乐播放器 -->
     <div class="music-player">
-        <audio id="background-music" src="audio/default_music.mp3" loop autoplay></audio>
+        <audio id="background-music" src="audio/default_music.MP3" loop autoplay></audio>
     </div>
     <script>
         // 模拟四次点击的不同数据
         const clickData = [
             {
-                backgroundImage: 'https://iknow-pic.cdn.bcebos.com/0823dd54564e9258e8efea708e82d158cdbf4e50',
+                backgroundImage: 'https://img1.baidu.com/it/u=3974559638,3671788250&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800',
                 buttonText: '🎶 来点首歌吧',
                 textContent: '点击开启专属生日 BGM 🎵  让旋律带着祝福环绕你身边'
             },
@@ -457,10 +457,10 @@
                 clickCount++;
                 updateContent();
                 if (clickCount === 1) {
-                    backgroundMusic.src = 'audio/happy_birthday.mp3';
+                    backgroundMusic.src = 'audio/happy_birthday.MP3';
                     backgroundMusic.play();
                 } else {
-                    backgroundMusic.src = 'audio/default_music.mp3';
+                    backgroundMusic.src = 'audio/default_music.MP3';
                     backgroundMusic.play();
                 }
                 if (clickCount === 2) {
@@ -477,7 +477,7 @@
             clickCount = 0;
             updateContent();
             closeQuizPage();
-            backgroundMusic.src = 'audio/default_music.mp3';
+            backgroundMusic.src = 'audio/default_music.MP3';
             backgroundMusic.play();
         });
 
@@ -502,7 +502,7 @@
             if (clickCount > 0) {
                 clickCount--;
                 updateContent();
-                backgroundMusic.src = 'audio/default_music.mp3';
+                backgroundMusic.src = 'audio/default_music.MP3';
                 backgroundMusic.play();
             }
         });
@@ -512,10 +512,10 @@
                 clickCount++;
                 updateContent();
                 if (clickCount === 1) {
-                    backgroundMusic.src = 'audio/happy_birthday.mp3';
+                    backgroundMusic.src = 'audio/happy_birthday.MP3';
                     backgroundMusic.play();
                 } else {
-                    backgroundMusic.src = 'audio/default_music.mp3';
+                    backgroundMusic.src = 'audio/default_music.MP3';
                     backgroundMusic.play();
                 }
             }
@@ -628,9 +628,9 @@
         let score = 320;
 
         // 创建音效元素
-        const correctSound = new Audio('audio/correct.mp3');
-        const wrongSound = new Audio('audio/wrong.mp3');
-        const coinDropSound = new Audio('audio/coin_drop.mp3');
+        const correctSound = new Audio('audio/correct.MP3');
+        const wrongSound = new Audio('audio/wrong.MP3');
+        const coinDropSound = new Audio('audio/coin_drop.MP3');
 
         function openQuizPage() {
             quizPage.style.display = 'block';
