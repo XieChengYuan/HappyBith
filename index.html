@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>送给xxx的 21 岁</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        /* 全局样式 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            overflow: hidden;
+        }
+
+        /* 顶部导航栏 */
+        nav {
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            z-index: 4;
+            /* 提高导航栏层级，确保在答题页面之上 */
+            position: relative;
+        }
+
+       .logo {
+            color: white;
+            font-size: 24px;
+        }
+
+       .nav-items {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+       .nav-items li {
+            margin-left: 20px;
+        }
+
+       .nav-items li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+       .nav-items li a:hover {
+            color: #f5f5f5;
+        }
+
+        /* 主视觉区 */
+       .main-visual {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+       .background-image {
+            background-image: url('https://iknow-pic.cdn.bcebos.com/0823dd54564e9258e8efea708e82d158cdbf4e50');
+            background-size: cover;
+            background-position: center;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            background-blend-mode: multiply;
+            z-index: 0;
+        }
+
+       .centered-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            font-family: 'Pacifico', cursive;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            z-index: 2;
+        }
+
+       .centered-text h1 {
+            font-size: 48px;
+        }
+
+        /* 交互按钮 */
+       .interactive-button {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #FF4081;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 15px 30px;
+            font-size: 18px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+       .interactive-button:hover {
+            background-color: #F50057;
+        }
+
+       .interactive-button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 70%);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+       .interactive-button:hover::before {
+            opacity: 1;
+        }
+
+        /* 切换组件 */
+       .switcher {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-sizing: border-box;
+            z-index: 2;
+        }
+
+       .arrow {
+            background-color: transparent;
+            border: none;
+            font-size: 36px;
+            color: white;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+       .arrow:hover {
+            opacity: 1;
+        }
+
+        /* 星光效果 */
+       .star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: twinkle 15s infinite alternate;
+            /* 延长动画时间，让飘动更慢 */
+        }
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0.2;
+                transform: translate(0, 0);
+            }
+
+            50% {
+                opacity: 1;
+                transform: translate(calc(-20px + Math.random() * 40px), calc(-20px + Math.random() * 40px));
+                /* 更大的飘动范围 */
+            }
+
+            100% {
+                opacity: 0.2;
+                transform: translate(0, 0);
+            }
+        }
+
+        /* 答题页面样式 */
+       .quiz-page {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://img0.baidu.com/it/u=651243907,17730157&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800');
+            background-size: cover;
+            background-position: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            background-blend-mode: multiply;
+            z-index: 3;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+       .question {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            /* 确保题目文本居中 */
+            transform: translateY(100px);
+            /* 下移文案 */
+        }
+
+       .options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            /* 选项之间的间距 */
+            margin-bottom: 20px;
+            transform: translateY(100px);
+            /* 下移选项按钮 */
+        }
+
+       .option {
+            margin: 0;
+            padding: 10px 20px;
+            background-color: #2196F3;
+            /* 更改选项按钮颜色 */
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+       .option:hover {
+            background-color: #1976D2;
+            /* 悬停时的颜色 */
+        }
+
+       .result {
+            margin-top: 20px;
+            font-size: 20px;
+            text-align: center;
+            /* 确保结果文本居中 */
+            transform: translateY(100px);
+            /* 下移结果文案 */
+        }
+
+       .next {
+            margin: 10px auto;
+            /* 使按钮居中显示 */
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: none;
+            display: block;
+            /* 确保按钮以块级元素显示 */
+            transform: translateY(100px);
+            /* 下移下一题按钮 */
+        }
+
+       .next:hover {
+            background-color: #388E3C;
+        }
+
+       .current-score {
+            font-size: 32px;
+            color: #FFD700;
+            text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFD700;
+            margin-top: 200px;
+            /* 调整与下一题按钮的间距 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transform: translateY(100px);
+            /* 与其他元素同步下移 */
+        }
+
+       .current-score::before {
+            content: "";
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background-image: url('https://img2.baidu.com/it/u=982693355,130697775&fm=253&fmt=auto&app=138&f=PNG?w=256&h=256');
+            background-size: cover;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            /* 保持圆角 */
+        }
+
+       .final-result {
+            display: none;
+            font-size: 24px;
+            /* 修改此处，使最终结果在屏幕中间显示 */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 5;
+            animation: zoomIn 1s ease-in-out forwards, glow 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0;
+            }
+
+            to {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 1;
+            }
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFD700, 0 0 40px #FFD700;
+            }
+
+            to {
+                text-shadow: 0 0 20px #FFD700, 0 0 30px #FFD700, 0 0 40px #FFD700, 0 0 50px #FFD700;
+            }
+        }
+
+       .gold-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 215, 0, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: fall 3s linear infinite;
+        }
+
+        @keyframes fall {
+            from {
+                top: -10px;
+                opacity: 1;
+            }
+
+            to {
+                top: 100vh;
+                opacity: 0;
+            }
+        }
+
+        /* 音乐播放器样式 */
+       .music-player {
+            display: none;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 5;
+        }
+
+        /* 气球样式 */
+       .balloon {
+            position: absolute;
+            bottom: -150px;
+            width: 120px;
+            height: 150px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            animation: fly 5s linear forwards;
+        }
+
+        @keyframes fly {
+            from {
+                bottom: -150px;
+            }
+            to {
+                bottom: 100vh;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 顶部导航栏 -->
+    <nav>
+        <div class="logo">送给xxx的 21 岁</div>
+        <ul class="nav-items">
+            <li><a href="#" id="home">主页</a></li>
+            <li><a href="#" id="red-envelope">领红包了</a></li>
+            <li><a href="#" id="about-xxx">我眼中的xxx</a></li>
+        </ul>
+    </nav>
+    <!-- 主视觉区 -->
+    <div class="main-visual">
+        <div class="background-image"></div>
+        <div class="centered-text">
+            <h1>文案内容</h1>
+        </div>
+    </div>
+    <!-- 交互按钮 -->
+    <button class="interactive-button">来点首歌吧</button>
+    <!-- 切换组件 -->
+    <div class="switcher">
+        <button class="arrow left-arrow">&lt;</button>
+        <button class="arrow right-arrow">&gt;</button>
+    </div>
+    <!-- 答题页面 -->
+    <div class="quiz-page">
+        <div class="question"></div>
+        <div class="options"></div>
+        <div class="result"></div>
+        <button class="next">下一题</button>
+        <div class="current-score">当前红包金额：320 元</div>
+        <div class="final-result"></div>
+    </div>
+    <!-- 音乐播放器 -->
+    <div class="music-player">
+        <audio id="background-music" src="audio/default_music.mp3" loop autoplay></audio>
+    </div>
+    <script>
+        // 模拟四次点击的不同数据
+        const clickData = [
+            {
+                backgroundImage: 'https://iknow-pic.cdn.bcebos.com/0823dd54564e9258e8efea708e82d158cdbf4e50',
+                buttonText: '🎶 来点首歌吧',
+                textContent: '点击开启专属生日 BGM 🎵  让旋律带着祝福环绕你身边'
+            },
+            {
+                backgroundImage: 'https://img1.baidu.com/it/u=3670863913,350825592&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800',
+                buttonText: '🎈 点我放飞气球',
+                textContent: '放飞气球 🕰️ 放飞梦想，愿你前程似锦'
+            },
+            {
+                backgroundImage: 'https://img2.baidu.com/it/u=221202160,865503129&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800',
+                buttonText: '🎁 再点我一次',
+                textContent: '吃蛋糕了 ✨ 你的专属生日彩蛋正在加载...'
+            },
+            {
+                backgroundImage: 'https://img1.baidu.com/it/u=1623702686,2510903486&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800',
+                buttonText: '💰 答题领红包啦！',
+                textContent: '接住这份心意满满的红包雨 💰 愿新一岁的你收获双倍快乐'
+            }
+        ];
+
+        let clickCount = 0;
+
+        // 交互按钮点击事件
+        const interactiveButton = document.querySelector('.interactive-button');
+        const backgroundMusic = document.getElementById('background-music');
+        interactiveButton.addEventListener('click', () => {
+            if (clickCount < clickData.length - 1) {
+                clickCount++;
+                updateContent();
+                if (clickCount === 1) {
+                    backgroundMusic.src = 'audio/happy_birthday.mp3';
+                    backgroundMusic.play();
+                } else {
+                    backgroundMusic.src = 'audio/default_music.mp3';
+                    backgroundMusic.play();
+                }
+                if (clickCount === 2) {
+                    flyBalloons();
+                }
+            } else if (clickCount === clickData.length - 1) {
+                openQuizPage();
+            }
+        });
+
+        // 主页点击事件
+        const homeLink = document.getElementById('home');
+        homeLink.addEventListener('click', () => {
+            clickCount = 0;
+            updateContent();
+            closeQuizPage();
+            backgroundMusic.src = 'audio/default_music.mp3';
+            backgroundMusic.play();
+        });
+
+        // 领红包点击事件
+        const redEnvelopeLink = document.getElementById('red-envelope');
+        redEnvelopeLink.addEventListener('click', () => {
+            openQuizPage();
+        });
+
+        // 我眼中的xxx点击事件
+        const aboutXxxLink = document.getElementById('about-xxx');
+        aboutXxxLink.addEventListener('click', () => {
+            // 这里添加相应的逻辑
+            alert('跳转到我眼中的xxx页面');
+        });
+
+        // 切换组件点击事件
+        const leftArrow = document.querySelector('.left-arrow');
+        const rightArrow = document.querySelector('.right-arrow');
+
+        leftArrow.addEventListener('click', () => {
+            if (clickCount > 0) {
+                clickCount--;
+                updateContent();
+                backgroundMusic.src = 'audio/default_music.mp3';
+                backgroundMusic.play();
+            }
+        });
+
+        rightArrow.addEventListener('click', () => {
+            if (clickCount < clickData.length - 1) {
+                clickCount++;
+                updateContent();
+                if (clickCount === 1) {
+                    backgroundMusic.src = 'audio/happy_birthday.mp3';
+                    backgroundMusic.play();
+                } else {
+                    backgroundMusic.src = 'audio/default_music.mp3';
+                    backgroundMusic.play();
+                }
+            }
+        });
+
+        // 更新页面内容
+        function updateContent() {
+            const currentData = clickData[clickCount];
+            const backgroundImage = document.querySelector('.background-image');
+            const button = document.querySelector('.interactive-button');
+            const text = document.querySelector('.centered-text h1');
+
+            backgroundImage.style.backgroundImage = `url('${currentData.backgroundImage}')`;
+            button.textContent = currentData.buttonText;
+            text.textContent = currentData.textContent;
+        }
+
+        // 生成星光
+        const numStars = 100;
+        const mainVisual = document.querySelector('.main-visual');
+        for (let i = 0; i < numStars; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.top = `${Math.random() * 100}vh`;
+            mainVisual.appendChild(star);
+        }
+
+        // 点击后星光跟随鼠标汇聚
+        let isClicking = false;
+        let targetX, targetY;
+        document.addEventListener('mousedown', (e) => {
+            isClicking = true;
+            targetX = e.clientX;
+            targetY = e.clientY;
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star) => {
+                star.style.animation = 'none';
+            });
+        });
+
+        document.addEventListener('mouseup', () => {
+            isClicking = false;
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star) => {
+                star.style.animation = 'twinkle 15s infinite alternate';
+                star.style.left = `${Math.random() * 100}vw`;
+                star.style.top = `${Math.random() * 100}vh`;
+            });
+        });
+
+        function moveStars() {
+            if (isClicking) {
+                const stars = document.querySelectorAll('.star');
+                stars.forEach((star) => {
+                    const rect = star.getBoundingClientRect();
+                    const starX = rect.left + rect.width / 2;
+                    const starY = rect.top + rect.height / 2;
+                    const dx = targetX - starX;
+                    const dy = targetY - starY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const speed = 1;
+                    // 减慢汇聚速度
+                    if (distance > speed) {
+                        star.style.left = `${starX + (dx / distance) * speed}px`;
+                        star.style.top = `${starY + (dy / distance) * speed}px`;
+                    }
+                });
+            }
+            requestAnimationFrame(moveStars);
+        }
+        moveStars();
+
+        // 答题页面逻辑
+        const quizPage = document.querySelector('.quiz-page');
+        const questionElement = document.querySelector('.question');
+        const optionsElement = document.querySelector('.options');
+        const resultElement = document.querySelector('.result');
+        const nextButton = document.querySelector('.next');
+        const finalResultElement = document.querySelector('.final-result');
+        const currentScoreElement = document.querySelector('.current-score');
+
+        const quizQuestions = [
+            {
+                question: '什么东西越洗越脏，不洗有人吃，洗了没人吃？',
+                options: ['水', '衣服', '水果'],
+                answer: '水'
+            },
+            {
+                question: '什么东西越生气，它便越大？',
+                options: ['气球', '脾气', '火焰'],
+                answer: '脾气'
+            },
+            {
+                question: '狼来了（猜一水果）',
+                options: ['杨梅', '香蕉', '苹果'],
+                answer: '杨梅'
+            },
+            {
+                question: '什么东西往上升永远掉不下来？',
+                options: ['年龄', '气球', '火箭'],
+                answer: '年龄'
+            }
+        ];
+
+        // 复制一份题目列表，避免修改原始数据
+        let availableQuestions = [...quizQuestions];
+
+        let currentQuestionIndex = 0;
+        let score = 320;
+
+        // 创建音效元素
+        const correctSound = new Audio('audio/correct.mp3');
+        const wrongSound = new Audio('audio/wrong.mp3');
+        const coinDropSound = new Audio('audio/coin_drop.mp3');
+
+        function openQuizPage() {
+            quizPage.style.display = 'block';
+            showQuestion();
+        }
+
+        function closeQuizPage() {
+            quizPage.style.display = 'none';
+            // 重置题目列表
+            availableQuestions = [...quizQuestions];
+            currentQuestionIndex = 0;
+            score = 320;
+            currentScoreElement.textContent = `当前红包金额：320 元`;
+        }
+
+        function showQuestion() {
+            if (availableQuestions.length === 0) {
+                showFinalResult();
+                return;
+            }
+            const currentQuestion = availableQuestions[currentQuestionIndex];
+            questionElement.textContent = currentQuestion.question;
+            optionsElement.innerHTML = '';
+            currentQuestion.options.forEach((option) => {
+                const optionButton = document.createElement('button');
+                optionButton.classList.add('option');
+                optionButton.textContent = option;
+                optionButton.addEventListener('click', () => {
+                    const selectedOption = option;
+                    checkAnswer(selectedOption);
+                });
+                optionsElement.appendChild(optionButton);
+            });
+            resultElement.textContent = '';
+            nextButton.style.display = 'none';
+        }
+
+        function checkAnswer(selectedOption) {
+            const currentQuestion = availableQuestions[currentQuestionIndex];
+            if (selectedOption === currentQuestion.answer) {
+                score += 50;
+                resultElement.textContent = '回答正确！';
+                correctSound.play();
+            } else {
+                score -= 30;
+                resultElement.textContent = `回答错误，正确答案是：${currentQuestion.answer}`;
+                wrongSound.play();
+            }
+            currentScoreElement.textContent = `当前红包金额：${score} 元`;
+            nextButton.style.display = 'block';
+            // 移除已展示的题目
+            availableQuestions.splice(currentQuestionIndex, 1);
+        }
+
+        nextButton.addEventListener('click', () => {
+            currentQuestionIndex = Math.min(currentQuestionIndex, availableQuestions.length - 1);
+            if (availableQuestions.length > 0) {
+                showQuestion();
+            } else {
+                showFinalResult();
+            }
+        });
+
+        function showFinalResult() {
+            finalResultElement.textContent = `恭喜你，本次答题结束，你可领取的金额为：${score} 元。凭此截图去找我领红包哦！`;
+            finalResultElement.style.display = 'block';
+            questionElement.style.display = 'none';
+            optionsElement.style.display = 'none';
+            resultElement.style.display = 'none';
+            nextButton.style.display = 'none';
+            currentScoreElement.style.display = 'none';
+
+            // 生成金光粒子
+            const numParticles = 50;
+            for (let i = 0; i < numParticles; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('gold-particle');
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.animationDelay = `${Math.random() * 3}s`;
+                document.body.appendChild(particle);
+            }
+
+            // 播放金币掉落音效
+            coinDropSound.play();
+        }
+
+        // 页面加载完成后触发主页链接的点击事件
+        window.addEventListener('load', () => {
+            homeLink.click();
+        });
+
+        // 放飞气球函数
+        function flyBalloons() {
+            const balloonColors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink'];
+            const mainVisual = document.querySelector('.main-visual');
+            // 重复创建气球3次，让气球更密集
+            for (let j = 0; j < 3; j++) {
+                balloonColors.forEach((color) => {
+                    const balloon = document.createElement('div');
+                    balloon.classList.add('balloon');
+                    balloon.style.backgroundImage = `url('img/${color}_balloon.png')`;
+                    balloon.style.left = `${Math.random() * 100}vw`;
+                    balloon.style.animationDuration = `${3 + Math.random() * 3}s`;
+                    mainVisual.appendChild(balloon);
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>    
